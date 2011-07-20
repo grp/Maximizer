@@ -24,8 +24,6 @@
 	<string>1</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2011 Xuzz Productions, LLC. All rights reserved.</string>
-	<key>NSPrincipalClass</key>
-	<string></string>
 	<key>SIMBLTargetApplications</key>
 	<array>
 		<dict>
@@ -37,5 +35,7 @@
 			<string>*</string>
 		</dict>
 	</array>
+	<key>NSPrincipalClass</key>
+	<string>Maximizer</string>
 </dict>
 </plist>

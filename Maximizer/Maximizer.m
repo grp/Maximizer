@@ -83,15 +83,15 @@ static id (*original_window_initwithcontentrect_stylemask_backing_defer)(NSWindo
 static id window_initwithcontentrect_stylemask_backing_defer(NSWindow *self, SEL _cmd, NSRect contentRect, NSUInteger windowStyle, NSBackingStoreType bufferingType, BOOL deferCreation) {
     self = original_window_initwithcontentrect_stylemask_backing_defer(self, _cmd, contentRect, windowStyle, bufferingType, deferCreation);
     
-#ifdef DEBUG
-    // This is useful to determinte the class of malfunctioning NSWindow instances.
-    NSLog(@"Window created with content rect of class: %@", [self class]);
-#endif
-    
     // run this on the next runloop iteration because we might want
     // to check is_supported_window() after the window has been setup
     dispatch_async(dispatch_get_main_queue(), ^{
         if (is_supported_window(self)) {
+#ifdef DEBUG
+            // This is useful to determinte the class of malfunctioning NSWindow instances.
+            NSLog(@"Window created with content rect of class: %@", [self class]);
+#endif
+            
             // this adds the full-screen behaviors, keeping the old ones
             [self setCollectionBehavior:[self collectionBehavior]];
         }
@@ -205,6 +205,10 @@ static BOOL browserwindowcontroller_windowmovementallowed(BrowserWindowControlle
     
     if (maximizer == nil) {
         maximizer = [[self alloc] init];
+        
+#ifdef DEBUG
+        NSLog(@"Loading Maximizer into bundle: %@", [[NSBundle mainBundle] bundleIdentifier]);
+#endif
         
         [[self class] hookClass:[NSWindow class] selector:@selector(initWithContentRect:styleMask:backing:defer:) replacement:(IMP) window_initwithcontentrect_stylemask_backing_defer original:(IMP *) &original_window_initwithcontentrect_stylemask_backing_defer];
         [[self class] hookClass:[NSWindow class] selector:@selector(setCollectionBehavior:) replacement:(IMP) window_setcollectionbehavior original:(IMP *) &original_window_setcollectionbehavior];
