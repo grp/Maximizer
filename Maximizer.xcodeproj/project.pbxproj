@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7DDD76EC13D747F800D5919E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDD76EB13D747F800D5919E /* Cocoa.framework */; };
 		7DDD76F613D747F800D5919E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7DDD76F413D747F800D5919E /* InfoPlist.strings */; };
+		7DDD76FF13D7481300D5919E /* Maximizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD76FE13D7481300D5919E /* Maximizer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,9 +18,11 @@
 		7DDD76EE13D747F800D5919E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		7DDD76EF13D747F800D5919E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7DDD76F013D747F800D5919E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		7DDD76F313D747F800D5919E /* Maximizer-Info.plist */ = {isa = PBXFileReference; path = "Maximizer-Info.plist"; sourceTree = "<group>"; };
+		7DDD76F313D747F800D5919E /* Maximizer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Maximizer-Info.plist"; sourceTree = "<group>"; };
 		7DDD76F513D747F800D5919E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7DDD76F713D747F800D5919E /* Maximizer-Prefix.pch */ = {isa = PBXFileReference; path = "Maximizer-Prefix.pch"; sourceTree = "<group>"; };
+		7DDD76F713D747F800D5919E /* Maximizer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Maximizer-Prefix.pch"; sourceTree = "<group>"; };
+		7DDD76FD13D7481300D5919E /* Maximizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Maximizer.h; sourceTree = "<group>"; };
+		7DDD76FE13D7481300D5919E /* Maximizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Maximizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				7DDD76F213D747F800D5919E /* Supporting Files */,
+				7DDD76FD13D7481300D5919E /* Maximizer.h */,
+				7DDD76FE13D7481300D5919E /* Maximizer.m */,
 			);
 			path = Maximizer;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DDD76FF13D7481300D5919E /* Maximizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
