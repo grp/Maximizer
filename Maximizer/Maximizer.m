@@ -21,6 +21,9 @@ static BOOL window_is_fullscreen(NSWindow *window) {
 }
 
 static BOOL is_supported_window(NSWindow *window) {
+    // a good test is to see if a window has the (+) button in the titlebar
+    if (!([window styleMask] & NSResizableWindowMask)) return NO;
+    
     Class class = [window class];
     NSString *className = NSStringFromClass(class);
     
@@ -29,52 +32,6 @@ static BOOL is_supported_window(NSWindow *window) {
     
     // panels are supposedly "auxiliary" windows
     if ([window isKindOfClass:NSClassFromString(@"NSPanel")]) return NO;
-    
-    // ignore spellcheck/autocorrect
-    if ([className hasPrefix:@"NSCorrection"]) return NO;
-    
-    // combo boxes
-    if ([window isKindOfClass:NSClassFromString(@"NSComboBoxWindow")]) return NO;
-    
-    // full screen toolbars
-    if ([window isKindOfClass:NSClassFromString(@"NSToolbarFullScreenWindow")]) return NO;
-    
-    // open panels
-    if ([window isKindOfClass:NSClassFromString(@"NSOpenPanel")]) return NO;
-    
-    // twitter for mac tooltips
-    if ([window isKindOfClass:NSClassFromString(@"ABUITooltipWindow")]) return NO;
-    
-    // firefox stuff; still has issues as most things are ToolbarWindow/BaseWindow instances
-    if ([window isKindOfClass:NSClassFromString(@"PopupWindow")] || [window isKindOfClass:NSClassFromString(@"FI_TFloatingInputWindow")] || [window isKindOfClass:NSClassFromString(@"ComplexTextInputPanel")]) return NO;
-    
-    // safari completion window
-    if ([window isKindOfClass:NSClassFromString(@"CompletionWindow")]) return NO;
-    
-    // mail
-    if ([window isKindOfClass:NSClassFromString(@"TypeAheadWindow")]) return NO;
-    
-    if (is_chromium()) {
-        // chrome bookmark dropdowns
-        if ([window isKindOfClass:NSClassFromString(@"BookmarkBarFolderWindow")]) return NO;
-        
-        // chrome download animations
-        if ([window isKindOfClass:NSClassFromString(@"AnimatableImage")]) return NO;
-        
-        // chrome sign-in prompts
-        if ([window isKindOfClass:NSClassFromString(@"GTMWSCOverlayWindow")]) return NO;
-        
-        // chrome flashblock popover
-        if ([window isKindOfClass:NSClassFromString(@"InfoBubbleWindow")]) return NO;
-        
-        // chrome omnibox suggestion window
-        if ([[window contentView] isKindOfClass:NSClassFromString(@"OmniboxPopupView")]) return NO;
-    }
-    
-    // XXX: there are lots more non-content NSWindow subclasses that should be special cased here.
-    //      actually, we probably shouldn't special case anything, we should somehow intelligently
-    //      figure out which windows are "main content" windows and which are "auxiliary" windows.
-    //      but that's quite a lot of work, especially for someone who doesn't know cocoa like me.
     
     return YES;
 }
@@ -89,11 +46,16 @@ static id window_initwithcontentrect_stylemask_backing_defer(NSWindow *self, SEL
         if (is_supported_window(self)) {
 #ifdef DEBUG
             // This is useful to determinte the class of malfunctioning NSWindow instances.
-            NSLog(@"Window created with content rect of class: %@", [self class]);
+            NSLog(@"Supported window created of class: %@", [self class]);
 #endif
             
             // this adds the full-screen behaviors, keeping the old ones
             [self setCollectionBehavior:[self collectionBehavior]];
+        } else {
+#ifdef DEBUG
+            // This is useful to determinte the class of unsupported-but-should-be NSWindow instances.
+            NSLog(@"Unsupported window created of class: %@", [self class]);
+#endif
         }
     });
     
