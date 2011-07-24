@@ -97,13 +97,15 @@ static CGFloat (*original_browserwindowcontroller_layouttabstripatmaxy_width_ful
 static CGFloat browserwindowcontroller_layouttabstripatmaxy_width_fullscreen(BrowserWindowController *self, SEL _cmd, CGFloat maxY, CGFloat width, BOOL fullscreen) {
     fullscreen = fullscreen || window_is_fullscreen([self window]);
     
+#ifdef SIMBL
     // This is a hack. The window apparently caches what its delegate responds to,
     // so we need to set the delegate to nil and back so it re-generates that cache
     // and then calls the appropriate delegate methods. Doing it here is an even
     // bigger hack than normal, but this method does get called at one point, so
-    // it's probably better than nothing. This isn't needed with CydiaSubstrate. :(
+    // it's probably better than nothing.
     [[self window] setDelegate:nil];
     [[self window] setDelegate:self];
+#endif
     
     return original_browserwindowcontroller_layouttabstripatmaxy_width_fullscreen(self, _cmd, maxY, width, fullscreen);
 }
