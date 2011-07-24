@@ -6,8 +6,12 @@
 //  Copyright 2011 Xuzz Productions, LLC. All rights reserved.
 //
 
+#import <Cocoa/Cocoa.h>
 #import <objc/runtime.h>
-#import "Maximizer.h"
+
+#ifdef SUBSTRATE
+#import <CydiaSubstrate/CydiaSubstrate.h>
+#endif
 
 static BOOL is_chromium() {
     BOOL chrome = [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.google.Chrome"];
@@ -24,8 +28,7 @@ static BOOL is_supported_window(NSWindow *window) {
     // a good test is to see if a window has the (+) button in the titlebar
     if (!([window styleMask] & NSResizableWindowMask)) return NO;
     
-    Class class = [window class];
-    NSString *className = NSStringFromClass(class);
+    NSString *className = NSStringFromClass([window class]);
     
     // ignore private windows, probably a good idea?
     if ([className hasPrefix:@"_"]) return NO;
@@ -131,18 +134,21 @@ static BOOL browserwindowcontroller_windowmovementallowed(BrowserWindowControlle
 }
 /* }}} */
 
-@implementation Maximizer
-
-+ (void)hookClass:(Class)class selector:(SEL)selector replacement:(IMP)replacement original:(IMP *)original {
-    if (class == nil || selector == NULL || replacement == NULL) {
+static void hook_class(Class cls, SEL selector, IMP replacement, IMP *original) {
+#ifdef SUBSTRATE
+    MSHookMessageEx(cls, selector, replacement, original);
+#endif
+    
+#ifdef SIMBL
+    if (cls == nil || selector == NULL || replacement == NULL) {
         NSLog(@"ERROR: Couldn't hook because a required argument was nil or NULL.");
         return;
     }
     
-    Method method = class_getInstanceMethod(class, selector);
+    Method method = class_getInstanceMethod(cls, selector);
     
     if (method == NULL) {
-        NSLog(@"ERROR: Unable to find method [%@ %@].", class, NSStringFromSelector(selector));
+        NSLog(@"ERROR: Unable to find method [%@ %@].", cls, NSStringFromSelector(selector));
         return;
     }
     
@@ -151,57 +157,70 @@ static BOOL browserwindowcontroller_windowmovementallowed(BrowserWindowControlle
     if (original != NULL) {
         *original = result;
     }
+#endif
 }
 
-+ (void)addToClass:(Class)class selector:(SEL)selector implementation:(IMP)implementation encoding:(const char *)types {
-    BOOL success = class_addMethod(class, selector, implementation, types);
+static void add_to_class(Class cls, SEL selector, IMP implementation, const char *encoding) {
+    BOOL success = class_addMethod(cls, selector, implementation, encoding);   
     
     if (!success) {
-        NSLog(@"ERROR: Unable to add [%@ %@].", class, NSStringFromSelector(selector));
+        NSLog(@"ERROR: Unable to add [%@ %@].", cls, NSStringFromSelector(selector));
         return;
     }
 }
 
-+ (void)load {
-    static Maximizer *maximizer = nil;
+#ifdef SUBSTRATE
+__attribute__((constructor)) static void maximizer_init()
+#endif
     
-    if (maximizer == nil) {
-        maximizer = [[self alloc] init];
-        
+#ifdef SIMBL
+@interface Maximizer : NSObject { }
+@end
+
+@implementation Maximizer
++ (void)load
+#endif
+
+{
 #ifdef DEBUG
         NSLog(@"Loading Maximizer into bundle: %@", [[NSBundle mainBundle] bundleIdentifier]);
 #endif
         
-        [[self class] hookClass:[NSWindow class] selector:@selector(initWithContentRect:styleMask:backing:defer:) replacement:(IMP) window_initwithcontentrect_stylemask_backing_defer original:(IMP *) &original_window_initwithcontentrect_stylemask_backing_defer];
-        [[self class] hookClass:[NSWindow class] selector:@selector(setCollectionBehavior:) replacement:(IMP) window_setcollectionbehavior original:(IMP *) &original_window_setcollectionbehavior];
+    hook_class([NSWindow class], @selector(initWithContentRect:styleMask:backing:defer:), (IMP) window_initwithcontentrect_stylemask_backing_defer, (IMP *) &original_window_initwithcontentrect_stylemask_backing_defer);
+    hook_class([NSWindow class], @selector(setCollectionBehavior:), (IMP) window_setcollectionbehavior, (IMP *) &original_window_setcollectionbehavior);
         
-        if (is_chromium()) {
-            [[self class] hookClass:NSClassFromString(@"BrowserWindowController") selector:@selector(setUpOSFullScreenButton) replacement:(IMP) browserwindowcontroller_setuposfullscreenbutton original:(IMP *) &original_browserwindowcontroller_setuposfullscreenbutton];
-            [[self class] hookClass:NSClassFromString(@"BrowserWindowController") selector:@selector(layoutTabStripAtMaxY:width:fullscreen:) replacement:(IMP) browserwindowcontroller_layouttabstripatmaxy_width_fullscreen original:(IMP *) &original_browserwindowcontroller_layouttabstripatmaxy_width_fullscreen];
-            [[self class] hookClass:NSClassFromString(@"BrowserWindowController") selector:@selector(tabTearingAllowed) replacement:(IMP) browserwindowcontroller_tabtearingallowed original:(IMP *) &original_browserwindowcontroller_tabtearingallowed];
-            [[self class] hookClass:NSClassFromString(@"BrowserWindowController") selector:@selector(windowMovementAllowed) replacement:(IMP) browserwindowcontroller_windowmovementallowed original:(IMP *) &original_browserwindowcontroller_windowmovementallowed];
+    if (is_chromium()) {
+        hook_class(NSClassFromString(@"BrowserWindowController"), @selector(setUpOSFullScreenButton), (IMP) browserwindowcontroller_setuposfullscreenbutton, (IMP *) &original_browserwindowcontroller_setuposfullscreenbutton);
+        hook_class(NSClassFromString(@"BrowserWindowController"), @selector(layoutTabStripAtMaxY:width:fullscreen:), (IMP) browserwindowcontroller_layouttabstripatmaxy_width_fullscreen, (IMP *) &original_browserwindowcontroller_layouttabstripatmaxy_width_fullscreen);
+        hook_class(NSClassFromString(@"BrowserWindowController"), @selector(tabTearingAllowed), (IMP) browserwindowcontroller_tabtearingallowed, (IMP *) &original_browserwindowcontroller_tabtearingallowed);
+        hook_class(NSClassFromString(@"BrowserWindowController"), @selector(windowMovementAllowed), (IMP) browserwindowcontroller_windowmovementallowed, (IMP *) &original_browserwindowcontroller_windowmovementallowed);
+        
+        add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowDidEnterFullScreen:), (IMP) browserwindowcontroller_windowdidenterfullscreen, "v@:@");
+        add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowDidExitFullScreen:), (IMP) browserwindowcontroller_windowdidexitfullscreen, "v@:@");
+        add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(window:willUseFullScreenContentSize:), (IMP) browserwindowcontroller_window_willusefullscreencontentsize, "{nssize=ff}@:@{nssize=ff}");
+    }
+    
+#ifdef SIMBL
+    for (NSWindow *window in [[NSApplication sharedApplication] windows]) {
+        if (is_supported_window(window)) {
+            // the hook for this adds the zoom button
+            [window setCollectionBehavior:[window collectionBehavior]];
             
-            [[self class] addToClass:NSClassFromString(@"BrowserWindowController") selector:@selector(windowDidEnterFullScreen:) implementation:(IMP) browserwindowcontroller_windowdidenterfullscreen encoding:"v@:@"];
-            [[self class] addToClass:NSClassFromString(@"BrowserWindowController") selector:@selector(windowDidExitFullScreen:) implementation:(IMP) browserwindowcontroller_windowdidexitfullscreen encoding:"v@:@"];
-            [[self class] addToClass:NSClassFromString(@"BrowserWindowController") selector:@selector(window:willUseFullScreenContentSize:) implementation:(IMP) browserwindowcontroller_window_willusefullscreencontentsize encoding:"{nssize=ff}@:@{nssize=ff}"];
-        }
-        
-        for (NSWindow *window in [[NSApplication sharedApplication] windows]) {
-            if (is_supported_window(window)) {
-                // the hook for this adds the zoom button
-                [window setCollectionBehavior:[window collectionBehavior]];
-                
-                // chrome sets the fullscreen button to enter their fullscreen mode, but we don't want
-                // that, so we need to set it back to entering lion's fullscreen mode ourselves. :(
-                // this is prevented in the future by nop-ing out the setupOSFullScreenButton method
-                if (is_chromium()) {
-                    NSButton *fullscreenButton = [window standardWindowButton:NSWindowFullScreenButton];	
-                    [fullscreenButton setAction:@selector(toggleFullScreen:)];	
-                    [fullscreenButton setTarget:window];	
-                }
+            // chrome sets the fullscreen button to enter their fullscreen mode, but we don't want
+            // that, so we need to set it back to entering lion's fullscreen mode ourselves. :(
+            // this is prevented in the future by nop-ing out the setupOSFullScreenButton method
+            if (is_chromium()) {
+                NSButton *fullscreenButton = [window standardWindowButton:NSWindowFullScreenButton];	
+                [fullscreenButton setAction:@selector(toggleFullScreen:)];	
+                [fullscreenButton setTarget:window];	
             }
         }
     }
+#endif
 }
 
+#ifdef SIMBL
 @end
+#endif
+
+

@@ -7,30 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7DDD76EC13D747F800D5919E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDD76EB13D747F800D5919E /* Cocoa.framework */; };
-		7DDD76F613D747F800D5919E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7DDD76F413D747F800D5919E /* InfoPlist.strings */; };
-		7DDD76FF13D7481300D5919E /* Maximizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD76FE13D7481300D5919E /* Maximizer.m */; };
+		7D47390913DC183E00DD48F4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDD76EB13D747F800D5919E /* Cocoa.framework */; };
+		7D47392513DC187200DD48F4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDD76EB13D747F800D5919E /* Cocoa.framework */; };
+		7D47393313DC192200DD48F4 /* CydiaSubstrate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D47393213DC192200DD48F4 /* CydiaSubstrate.framework */; };
+		7D47393813DC19A400DD48F4 /* Maximizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD76FE13D7481300D5919E /* Maximizer.mm */; };
+		7D47393913DC19AC00DD48F4 /* Maximizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD76FE13D7481300D5919E /* Maximizer.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7DDD76E813D747F800D5919E /* Maximizer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Maximizer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D47390813DC183E00DD48F4 /* MaximizerSubstrate.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = MaximizerSubstrate.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D47392413DC187200DD48F4 /* MaximizerSIMBL.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaximizerSIMBL.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D47393213DC192200DD48F4 /* CydiaSubstrate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CydiaSubstrate.framework; path = Library/Frameworks/CydiaSubstrate.framework; sourceTree = SDKROOT; };
 		7DDD76EB13D747F800D5919E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		7DDD76EE13D747F800D5919E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		7DDD76EF13D747F800D5919E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7DDD76F013D747F800D5919E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		7DDD76F313D747F800D5919E /* Maximizer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Maximizer-Info.plist"; sourceTree = "<group>"; };
-		7DDD76F513D747F800D5919E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7DDD76F713D747F800D5919E /* Maximizer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Maximizer-Prefix.pch"; sourceTree = "<group>"; };
-		7DDD76FD13D7481300D5919E /* Maximizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Maximizer.h; sourceTree = "<group>"; };
-		7DDD76FE13D7481300D5919E /* Maximizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Maximizer.m; sourceTree = "<group>"; };
+		7DDD76F313D747F800D5919E /* SIMBL-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SIMBL-Info.plist"; sourceTree = "<group>"; };
+		7DDD76FE13D7481300D5919E /* Maximizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Maximizer.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		7DDD76E513D747F800D5919E /* Frameworks */ = {
+		7D47390513DC183E00DD48F4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DDD76EC13D747F800D5919E /* Cocoa.framework in Frameworks */,
+				7D47393313DC192200DD48F4 /* CydiaSubstrate.framework in Frameworks */,
+				7D47390913DC183E00DD48F4 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D47392113DC187200DD48F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D47392513DC187200DD48F4 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,7 +59,8 @@
 		7DDD76E913D747F800D5919E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7DDD76E813D747F800D5919E /* Maximizer.bundle */,
+				7D47390813DC183E00DD48F4 /* MaximizerSubstrate.dylib */,
+				7D47392413DC187200DD48F4 /* MaximizerSIMBL.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -57,60 +68,69 @@
 		7DDD76EA13D747F800D5919E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D47393213DC192200DD48F4 /* CydiaSubstrate.framework */,
 				7DDD76EB13D747F800D5919E /* Cocoa.framework */,
-				7DDD76ED13D747F800D5919E /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		7DDD76ED13D747F800D5919E /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
 				7DDD76EE13D747F800D5919E /* AppKit.framework */,
 				7DDD76EF13D747F800D5919E /* CoreData.framework */,
 				7DDD76F013D747F800D5919E /* Foundation.framework */,
 			);
-			name = "Other Frameworks";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		7DDD76F113D747F800D5919E /* Maximizer */ = {
 			isa = PBXGroup;
 			children = (
-				7DDD76F213D747F800D5919E /* Supporting Files */,
-				7DDD76FD13D7481300D5919E /* Maximizer.h */,
-				7DDD76FE13D7481300D5919E /* Maximizer.m */,
+				7DDD76FE13D7481300D5919E /* Maximizer.mm */,
+				7DDD76F313D747F800D5919E /* SIMBL-Info.plist */,
 			);
 			path = Maximizer;
 			sourceTree = "<group>";
 		};
-		7DDD76F213D747F800D5919E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				7DDD76F313D747F800D5919E /* Maximizer-Info.plist */,
-				7DDD76F413D747F800D5919E /* InfoPlist.strings */,
-				7DDD76F713D747F800D5919E /* Maximizer-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		7D47390613DC183E00DD48F4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		7DDD76E713D747F800D5919E /* Maximizer */ = {
+		7D47390713DC183E00DD48F4 /* MaximizerSubstrate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DDD76FA13D747F800D5919E /* Build configuration list for PBXNativeTarget "Maximizer" */;
+			buildConfigurationList = 7D47391013DC183E00DD48F4 /* Build configuration list for PBXNativeTarget "MaximizerSubstrate" */;
 			buildPhases = (
-				7DDD76E413D747F800D5919E /* Sources */,
-				7DDD76E513D747F800D5919E /* Frameworks */,
-				7DDD76E613D747F800D5919E /* Resources */,
+				7D47390413DC183E00DD48F4 /* Sources */,
+				7D47390513DC183E00DD48F4 /* Frameworks */,
+				7D47390613DC183E00DD48F4 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Maximizer;
-			productName = Maximizer;
-			productReference = 7DDD76E813D747F800D5919E /* Maximizer.bundle */;
+			name = MaximizerSubstrate;
+			productName = MaximizerSubstrate;
+			productReference = 7D47390813DC183E00DD48F4 /* MaximizerSubstrate.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		7D47392313DC187200DD48F4 /* MaximizerSIMBL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D47392D13DC187200DD48F4 /* Build configuration list for PBXNativeTarget "MaximizerSIMBL" */;
+			buildPhases = (
+				7D47392013DC187200DD48F4 /* Sources */,
+				7D47392113DC187200DD48F4 /* Frameworks */,
+				7D47392213DC187200DD48F4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MaximizerSIMBL;
+			productName = MaximizerSIMBL;
+			productReference = 7D47392413DC187200DD48F4 /* MaximizerSIMBL.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -130,49 +150,99 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7DDD76E713D747F800D5919E /* Maximizer */,
+				7D47390713DC183E00DD48F4 /* MaximizerSubstrate */,
+				7D47392313DC187200DD48F4 /* MaximizerSIMBL */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		7DDD76E613D747F800D5919E /* Resources */ = {
+		7D47392213DC187200DD48F4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DDD76F613D747F800D5919E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		7DDD76E413D747F800D5919E /* Sources */ = {
+		7D47390413DC183E00DD48F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DDD76FF13D7481300D5919E /* Maximizer.m in Sources */,
+				7D47393813DC19A400DD48F4 /* Maximizer.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D47392013DC187200DD48F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D47393913DC19AC00DD48F4 /* Maximizer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		7DDD76F413D747F800D5919E /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7DDD76F513D747F800D5919E /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		7DDD76F813D747F800D5919E /* Debug */ = {
+		7D47391113DC183E00DD48F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"SUBSTRATE=1",
+					"DEBUG=1",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7D47391213DC183E00DD48F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "SUBSTRATE=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		7D47392E13DC187200DD48F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"SIMBL=1",
+				);
+				INFOPLIST_FILE = "Maximizer/SIMBL-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		7D47392F13DC187200DD48F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "SIMBL=1";
+				INFOPLIST_FILE = "Maximizer/SIMBL-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		7DDD76F813D747F800D5919E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = NO;
@@ -180,10 +250,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -199,13 +266,13 @@
 		7DDD76F913D747F800D5919E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -216,48 +283,32 @@
 			};
 			name = Release;
 		};
-		7DDD76FB13D747F800D5919E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Maximizer/Maximizer-Prefix.pch";
-				INFOPLIST_FILE = "Maximizer/Maximizer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Application Support/SIMBL/Plugins";
-				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		7DDD76FC13D747F800D5919E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Maximizer/Maximizer-Prefix.pch";
-				INFOPLIST_FILE = "Maximizer/Maximizer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Application Support/SIMBL/Plugins";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7D47391013DC183E00DD48F4 /* Build configuration list for PBXNativeTarget "MaximizerSubstrate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D47391113DC183E00DD48F4 /* Debug */,
+				7D47391213DC183E00DD48F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D47392D13DC187200DD48F4 /* Build configuration list for PBXNativeTarget "MaximizerSIMBL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D47392E13DC187200DD48F4 /* Debug */,
+				7D47392F13DC187200DD48F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7DDD76E213D747F800D5919E /* Build configuration list for PBXProject "Maximizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DDD76F813D747F800D5919E /* Debug */,
 				7DDD76F913D747F800D5919E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7DDD76FA13D747F800D5919E /* Build configuration list for PBXNativeTarget "Maximizer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7DDD76FB13D747F800D5919E /* Debug */,
-				7DDD76FC13D747F800D5919E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
