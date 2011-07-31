@@ -73,18 +73,16 @@ static id window_initwithcontentrect_stylemask_backing_defer(NSWindow *self, SEL
             // chromium popup windows shouldn't go fullscreen without a tabstrip
             // this has to be done here because they are automatically set full-
             // screen before we know that they shouldn't be able to, so we need to
-            // undo the damage that was caused before.
+            // undo the damage that was caused before. XXX: this does not work :(
             if (is_chromium()) {
                 NSWindowController *controller = [self windowController];
                 
                 if ([controller isKindOfClass:NSClassFromString(@"BrowserWindowController")]) {
                     BrowserWindowController *browserController = (BrowserWindowController *) controller;
                     
-                    NSLog(@"Resetting collection behavior!!");
                     [self setCollectionBehavior:([self collectionBehavior] & ~NSWindowCollectionBehaviorFullScreenPrimary)];
                     
                     if (![browserController hasTabStrip] && window_is_fullscreen(self)) {
-                        NSLog(@"Exiting fullscreen.....!!asdfa1sdhi3285708w945790285");
                         [self toggleFullScreen:nil];
                     }
                 }
