@@ -138,6 +138,9 @@
 /* Begin PBXProject section */
 		7DDD76DF13D747F800D5919E /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 7DDD76E213D747F800D5919E /* Build configuration list for PBXProject "Maximizer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

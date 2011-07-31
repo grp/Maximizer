@@ -13,6 +13,13 @@
 #import <CydiaSubstrate/CydiaSubstrate.h>
 #endif
 
+/* Chromium Prototypes {{{ */
+
+@interface BrowserWindowController : NSWindowController <NSWindowDelegate> { }
+- (void)layoutSubviews;
+- (BOOL)hasTabStrip;
+@end
+
 static BOOL is_chromium() {
     BOOL chrome = [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.google.Chrome"];
     BOOL chromium = [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"org.chromium.Chromium"];
@@ -20,10 +27,13 @@ static BOOL is_chromium() {
     return (chrome || chromium);
 }
 
+/* }}} */
+
 static BOOL window_is_fullscreen(NSWindow *window) {
     return !!([window styleMask] & NSFullScreenWindowMask);
 }
 
+// can this window go fullscreen?
 static BOOL is_supported_window(NSWindow *window) {
     // a good test is to see if a window has the (+) button in the titlebar
     if (!([window styleMask] & NSResizableWindowMask)) return NO;
@@ -32,6 +42,11 @@ static BOOL is_supported_window(NSWindow *window) {
     
     // ignore private windows, probably a good idea?
     if ([className hasPrefix:@"_"]) return NO;
+    
+    // fix Mail compose windows
+    if ([className isEqualToString:@"ModalDimmingWindow"]) return NO;
+    if ([className isEqualToString:@"TypeAheadWindow"]) return NO;
+    if ([className isEqualToString:@"MouseTrackingWindow"]) return NO;
     
     // panels are supposedly "auxiliary" windows
     if ([window isKindOfClass:NSClassFromString(@"NSPanel")]) return NO;
@@ -49,15 +64,35 @@ static id window_initwithcontentrect_stylemask_backing_defer(NSWindow *self, SEL
         if (is_supported_window(self)) {
 #ifdef DEBUG
             // This is useful to determinte the class of malfunctioning NSWindow instances.
-            NSLog(@"Supported window created of class: %@", [self class]);
+            NSLog(@"Maximizer: Supported window created of class: %@", [self class]);
 #endif
             
             // this adds the full-screen behaviors, keeping the old ones
             [self setCollectionBehavior:[self collectionBehavior]];
+            
+            // chromium popup windows shouldn't go fullscreen without a tabstrip
+            // this has to be done here because they are automatically set full-
+            // screen before we know that they shouldn't be able to, so we need to
+            // undo the damage that was caused before.
+            if (is_chromium()) {
+                NSWindowController *controller = [self windowController];
+                
+                if ([controller isKindOfClass:NSClassFromString(@"BrowserWindowController")]) {
+                    BrowserWindowController *browserController = (BrowserWindowController *) controller;
+                    
+                    NSLog(@"Resetting collection behavior!!");
+                    [self setCollectionBehavior:([self collectionBehavior] & ~NSWindowCollectionBehaviorFullScreenPrimary)];
+                    
+                    if (![browserController hasTabStrip] && window_is_fullscreen(self)) {
+                        NSLog(@"Exiting fullscreen.....!!asdfa1sdhi3285708w945790285");
+                        [self toggleFullScreen:nil];
+                    }
+                }
+            }
         } else {
 #ifdef DEBUG
             // This is useful to determinte the class of unsupported-but-should-be NSWindow instances.
-            NSLog(@"Unsupported window created of class: %@", [self class]);
+            NSLog(@"Maximizer: Unsupported window created of class: %@", [self class]);
 #endif
         }
     });
@@ -68,21 +103,32 @@ static id window_initwithcontentrect_stylemask_backing_defer(NSWindow *self, SEL
 static void (*original_window_setcollectionbehavior)(NSWindow *self, SEL _cmd, NSWindowCollectionBehavior behavior);
 static void window_setcollectionbehavior(NSWindow *self, SEL _cmd, NSWindowCollectionBehavior behavior) {
     if (is_supported_window(self)) {
-        behavior |= NSWindowCollectionBehaviorFullScreenPrimary | NSWindowCollectionBehaviorFullScreenAuxiliary;
+        behavior |= NSWindowCollectionBehaviorFullScreenPrimary;
     }
     
     original_window_setcollectionbehavior(self, _cmd, behavior);
 }
 
 /* Chromium Hacks {{{ */
-@interface BrowserWindowController : NSWindowController <NSWindowDelegate> { }
-- (void)layoutSubviews;
-@end
 
 static NSSize browserwindowcontroller_window_willusefullscreencontentsize(BrowserWindowController *self, SEL _cmd, NSWindow *window, NSSize proposedSize) {
     [window setFrame:NSMakeRect(0, 0, proposedSize.width, proposedSize.height) display:YES animate:NO];
     [self layoutSubviews];
     return proposedSize;
+}
+
+static void browserwindowcontroller_windowwillenterfullscreen(BrowserWindowController *self, SEL _cmd, NSNotification *notification) {
+    // it's useful to consider a window in its final state while animating, so we
+    // know how to update it before it has finsihed animating to the new state
+    [[self window] setStyleMask:([[self window] styleMask] | NSFullScreenWindowMask)];
+    [self layoutSubviews];
+}
+
+static void browserwindowcontroller_windowwillexitfullscreen(BrowserWindowController *self, SEL _cmd, NSNotification *notification) {
+    // it's useful to consider a window in its final state while animating, so we
+    // know how to update it before it has finsihed animating to the new state
+    [[self window] setStyleMask:([[self window] styleMask] & ~NSFullScreenWindowMask)];
+    [self layoutSubviews];
 }
 
 static void browserwindowcontroller_windowdidenterfullscreen(BrowserWindowController *self, SEL _cmd, NSNotification *notification) {
@@ -199,6 +245,8 @@ __attribute__((constructor)) static void maximizer_init()
         
         add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowDidEnterFullScreen:), (IMP) browserwindowcontroller_windowdidenterfullscreen, "v@:@");
         add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowDidExitFullScreen:), (IMP) browserwindowcontroller_windowdidexitfullscreen, "v@:@");
+        add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowWillEnterFullScreen:), (IMP) browserwindowcontroller_windowwillenterfullscreen, "v@:@");
+        add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(windowWillExitFullScreen:), (IMP) browserwindowcontroller_windowwillexitfullscreen, "v@:@");
         add_to_class(NSClassFromString(@"BrowserWindowController"), @selector(window:willUseFullScreenContentSize:), (IMP) browserwindowcontroller_window_willusefullscreencontentsize, "{nssize=ff}@:@{nssize=ff}");
     }
     
