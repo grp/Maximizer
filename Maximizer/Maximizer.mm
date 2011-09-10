@@ -181,11 +181,9 @@ static BOOL browserwindowcontroller_windowmovementallowed(BrowserWindowControlle
 /* }}} */
 
 static void hook_class(Class cls, SEL selector, IMP replacement, IMP *original) {
-#ifdef SUBSTRATE
+#if defined(SUBSTRATE)
     MSHookMessageEx(cls, selector, replacement, original);
-#endif
-    
-#ifdef SIMBL
+#elif defined(SIMBL)
     if (cls == nil || selector == NULL || replacement == NULL) {
         NSLog(@"ERROR: Couldn't hook because a required argument was nil or NULL.");
         return;
@@ -203,6 +201,8 @@ static void hook_class(Class cls, SEL selector, IMP replacement, IMP *original) 
     if (original != NULL) {
         *original = result;
     }
+#else
+#error "Must use either CydiaSubstrate or SIMBL."
 #endif
 }
 
@@ -215,16 +215,16 @@ static void add_to_class(Class cls, SEL selector, IMP implementation, const char
     }
 }
 
-#ifdef SUBSTRATE
+#if defined(SUBSTRATE)
 __attribute__((constructor)) static void maximizer_init()
-#endif
-    
-#ifdef SIMBL
+#elif defined(SIMBL)
 @interface Maximizer : NSObject { }
 @end
 
 @implementation Maximizer
 + (void)load
+#else
+#error "Must use either CydiaSubstrate or SIMBL."
 #endif
 
 {
